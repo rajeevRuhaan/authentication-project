@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { getDbConnection } from "../db";
 
-export const logInROute = {
+export const logInRoute = {
   path: "/api/login",
   method: "post",
   handler: async (req, res) => {

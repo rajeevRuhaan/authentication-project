@@ -35,7 +35,7 @@ export const signUpRoute = {
       {
         id: insertedId,
         email,
-        infor: startingInfo,
+        info: startingInfo,
         isVerified: false,
       },
       process.env.JWT_SECRET,
