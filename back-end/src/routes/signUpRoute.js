@@ -17,47 +17,53 @@ export const signUpRoute = {
       new CognitoUserAttribute({ Name: "email", Value: email }),
     ];
 
-    awsUserPool.signUp(email, password, attributes, null, async (err) => {
-      if (err) {
-        console.log("error", err);
-        return res.status(500).json({ message: "Unable to sign up" });
-      }
+    awsUserPool.signUp(
+      email,
+      password,
+      attributes,
+      null,
+      async (err, testResult) => {
+        if (err) {
+          console.log("error", err);
+          return res.status(500).json({ message: "Unable to sign up" });
+        }
 
-      const db = getDbConnection("react-auth-db");
+        const db = getDbConnection("react-auth-db");
 
-      const startingInfo = {
-        hairColor: "",
-        favoriteFood: "",
-        bio: "",
-      };
+        const startingInfo = {
+          hairColor: "",
+          favoriteFood: "",
+          bio: "",
+        };
 
-      const result = await db.collection("users").insertOne({
-        email,
-        info: startingInfo,
-      });
-
-      const { insertedId } = result;
-
-      jwt.sign(
-        {
-          id: insertedId,
-          isVerified: false,
+        const result = await db.collection("users").insertOne({
           email,
           info: startingInfo,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: "2d",
-        },
-        (error, token) => {
-          if (error) {
-            return res.sendStatus(500);
-          }
+        });
 
-          return res.status(200).json({ token });
-        }
-      );
-    });
+        const { insertedId } = result;
+
+        jwt.sign(
+          {
+            id: insertedId,
+            isVerified: false,
+            email,
+            info: startingInfo,
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "2d",
+          },
+          (error, token) => {
+            if (error) {
+              return res.sendStatus(500);
+            }
+
+            return res.status(200).json({ token });
+          }
+        );
+      }
+    );
 
     /* const { email, password } = req.body;
     const db = getDbConnection("react-auth-db");
