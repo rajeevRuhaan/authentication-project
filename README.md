@@ -13,3 +13,7 @@ what I have learned?
 3. JWT TOKEN: it is digital signed token. it is useful for authorization. The application use access token to access a protected resources.
 
 *signed token contain information and is exposed to suer or other parties. The information are unable to change it. This means we should not put secret information within the Token*
+
+4. Verify emails, reset passwords
+5. How to incorporate OAuth
+6. How to use third party authentication providers (AWS Cognito)
