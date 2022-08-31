@@ -1,13 +1,23 @@
-import { v4 as uuid } from "uuid";
+/* import { v4 as uuid } from "uuid";
 import { sendEmail } from "../util/sendEmail";
-import { getDbConnection } from "../db";
+import { getDbConnection } from "../db"; */
+import { CognitoUser } from "amazon-cognito-identity-js";
+import { awsUserPool } from "../util/awsUserPool";
 
 export const forgotPasswordRoute = {
   path: "/api/forgot-passwprd/:email",
   method: "put",
   handler: async (req, res) => {
     const { email } = req.params;
-    const db = getDbConnection("react-auth-db");
+    new CognitoUser({ Username: email, Pool: awsUserPool }).forgotPassword({
+      onSuccess: () => {
+        res.sendStatus(200);
+      },
+      onFailure: () => {
+        res.sendStatus(500);
+      },
+    });
+    /*     const db = getDbConnection("react-auth-db");
 
     const passwordResetCode = uuid();
     const { result } = await db
@@ -29,6 +39,6 @@ export const forgotPasswordRoute = {
         res.sendStatus(500);
       }
     }
-    res.sendStatus(200);
+    res.sendStatus(200); */
   },
 };

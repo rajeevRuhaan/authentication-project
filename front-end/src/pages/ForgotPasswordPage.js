@@ -14,7 +14,8 @@ export const ForgotPasswordPage = () => {
       await axios.put(`/api/forgot-passwprd/${emailValue}`);
       setSuccess(true);
       setTimeout(() => {
-        history.push("/login");
+        //history.push("/login");
+        history.push(`/reset-password?email=${encodeURIComponent(emailValue)}`);
       }, 3000);
     } catch (error) {
       setErrorMessage(error.message);
